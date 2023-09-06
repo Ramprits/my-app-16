@@ -7,6 +7,7 @@ import {
   FormArray,
   FormsModule,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 
 @Component({
@@ -22,11 +23,18 @@ export class CreateUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.userForm = this.fb.group({
-      name: [''],
-      email: [''],
-      phone: [''],
+      name: ['', [Validators.required, Validators.minLength(4)]],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.required]],
       addresses: this.fb.array([this.createAddress()]),
     });
+  }
+
+  get name() {
+    return this.userForm.get('name');
+  }
+  get email() {
+    return this.userForm.get('email');
   }
 
   createAddress(): FormGroup {
